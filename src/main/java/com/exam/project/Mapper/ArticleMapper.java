@@ -13,4 +13,6 @@ public interface ArticleMapper {
     HashMap retrieveArticle(long articleId);
 
     void viewCountUp(long articleId);
+
+    int deleteArticle(long articleId);
 }

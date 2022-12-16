@@ -66,14 +66,9 @@ public class ArticleService {
             ArticleRetrieveResponseDTO articleRetrieveResponseDTO=responseMapping(tempDTO);
 
             return ResponseDTO.success(articleRetrieveResponseDTO);
-        }
-        catch (NullArticleException e){
+        }catch (NullArticleException e){
             return ResponseDTO.fail("None Exist Article","해당 ID에 존재하는 게시글이 없습니다.");
         }
-
-
-
-
     }
 
     public ArticleRetrieveResponseDTO responseMapping(HashMap hashMap){
@@ -85,7 +80,6 @@ public class ArticleService {
         List<String> images = new ArrayList<>();
         images.add("imageEX");
 
-
         ArticleRetrieveResponseDTO responseDTO = ArticleRetrieveResponseDTO.builder()
                 .id(Long.parseLong(hashMap.get("article_id").toString()))
                 .title(hashMap.get("title").toString())
@@ -95,6 +89,20 @@ public class ArticleService {
                 .image(images)
                 .build();
         return responseDTO;
+    }
+
+    public ResponseDTO<String> deleteArticle(long articleId){
+        try {
+            int deleteCheck=articleMapper.deleteArticle(articleId);
+            if(deleteCheck==0){
+                throw new NullArticleException();
+            }
+            return ResponseDTO.success(articleId+"번 게시물 삭제 완료");
+        }catch (NullArticleException e){
+            return ResponseDTO.fail("None Exist Article","해당 ID에 존재하는 게시글이 없습니다.");
+        }catch (Exception e){
+            return ResponseDTO.fail("Error","오류가 발생하였습니다.");
+        }
     }
 
     static class NullArticleException extends RuntimeException{
