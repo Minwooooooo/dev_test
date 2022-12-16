@@ -5,12 +5,12 @@ import com.exam.project.Controller.DTO.ResponseDTO.ArticleRetrieveResponseDTO;
 import com.exam.project.Controller.DTO.ResponseDTO.ResponseDTO;
 import com.exam.project.Entity.ArticleEntity;
 import com.exam.project.Mapper.ArticleMapper;
+import com.exam.project.Mapper.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,10 +19,12 @@ import java.util.List;
 @Service
 public class ArticleService {
     private final ArticleMapper articleMapper;
+    private final BoardMapper boardMapper;
 
     @Autowired
-    public ArticleService(ArticleMapper articleMapper) {
+    public ArticleService(ArticleMapper articleMapper, BoardMapper boardMapper) {
         this.articleMapper = articleMapper;
+        this.boardMapper = boardMapper;
     }
 
     //Create : title, content를 입력으로 받아 생성, content_html, content_string 둘다 content 받아서 넣는다.
@@ -43,25 +45,41 @@ public class ArticleService {
     }
 
     //Retrieve : id, title, content_html, view_count, is_pinned, created_datetime, 같은 게시글의 모든 이미지, 게시판 명 (board->name_ko)
+    @Transactional
     public ResponseDTO<ArticleRetrieveResponseDTO> retrieveArticle(long articleId){
-        ArticleRetrieveResponseDTO articleRetrieveResponseDTO=responseMapping(articleMapper.retrieveArticle(articleId));
 
-        System.out.println(articleRetrieveResponseDTO.getId());
-        System.out.println(articleRetrieveResponseDTO.getTitle());
-        System.out.println(articleRetrieveResponseDTO.getViewCount());
-        System.out.println(articleRetrieveResponseDTO.isPinned());
-        System.out.println(articleRetrieveResponseDTO.getCreatedDatetime());
-        System.out.println(articleRetrieveResponseDTO.getBoard());
-        System.out.println(articleRetrieveResponseDTO.getImage());
+        try {
 
-        return ResponseDTO.success(articleRetrieveResponseDTO);
+            HashMap tempDTO=articleMapper.retrieveArticle(articleId);
+            if(tempDTO==null){
+                System.out.println("tempDTO==null");
+                throw new NullArticleException();
+            }
+
+            // View Count 증가
+            articleMapper.viewCountUp(articleId);
+
+            int newViewCount= Integer.parseInt(tempDTO.get("view_count").toString())+1;
+            tempDTO.replace("view_count",newViewCount);
+
+
+            ArticleRetrieveResponseDTO articleRetrieveResponseDTO=responseMapping(tempDTO);
+
+            return ResponseDTO.success(articleRetrieveResponseDTO);
+        }
+        catch (NullArticleException e){
+            return ResponseDTO.fail("None Exist Article","해당 ID에 존재하는 게시글이 없습니다.");
+        }
+
+
+
 
     }
 
     public ArticleRetrieveResponseDTO responseMapping(HashMap hashMap){
 
         // 게시판이름 조회 by BoardId
-        String board = "boardEX";
+        String board = boardMapper.boardIdToName(Long.parseLong(hashMap.get("board_id").toString()));
 
         // 이미지 List화
         List<String> images = new ArrayList<>();
@@ -77,5 +95,8 @@ public class ArticleService {
                 .image(images)
                 .build();
         return responseDTO;
+    }
+
+    static class NullArticleException extends RuntimeException{
     }
 }

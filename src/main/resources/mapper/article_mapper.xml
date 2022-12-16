@@ -11,10 +11,18 @@
     </insert>
     
     <select id="retrieveArticle" resultType="hashMap" parameterType="long">
-        select
+        SELECT
             article_id,board_id,created_datetime,is_pinned,view_count,title,content_html,content_string
         FROM cms__article
         where article_id = #{articleId}
     </select>
+
+    <update id="viewCountUp" parameterType="long">
+        UPDATE
+            cms__article
+        SET
+            view_count = view_count+1
+        WHERE article_id=#{articleId}
+    </update>
 
 </mapper>

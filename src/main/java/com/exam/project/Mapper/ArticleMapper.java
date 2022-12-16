@@ -11,4 +11,6 @@ public interface ArticleMapper {
     void createArticle(ArticleEntity articleEntity);
 
     HashMap retrieveArticle(long articleId);
+
+    void viewCountUp(long articleId);
 }
