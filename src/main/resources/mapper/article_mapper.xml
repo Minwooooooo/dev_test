@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exam.project.Mapper.ArticleMapper">
+    <insert id="createArticle" parameterType="com.exam.project.Entity.ArticleEntity" useGeneratedKeys="false" keyProperty="article_id">
+        INSERT into cms__article
+            (board_id,created_datetime,is_pinned,view_count,title,content_html,content_string)
+        VALUES
+            (#{boardId},#{createdDatetime},#{isPinned},#{viewCount},#{title},#{contentHtml},#{contentString})
+    </insert>
+    
+    <select id="retrieveArticle" resultType="hashMap" parameterType="long">
+        select
+            article_id,board_id,created_datetime,is_pinned,view_count,title,content_html,content_string
+        FROM cms__article
+        where article_id = #{articleId}
+    </select>
+
+</mapper>
