@@ -32,6 +32,7 @@ public class ArticleTest {
     @Test
     void retrieveArticleTest(){
         ResponseDTO responseDTO=articleService.retrieveArticle(5);
+        System.out.println("==============================================");
         if (responseDTO.getSuccess()){
             System.out.println("Test Success");
             ArticleRetrieveResponseDTO articleRetrieveResponseDTO = (ArticleRetrieveResponseDTO) responseDTO.getData();
@@ -47,6 +48,22 @@ public class ArticleTest {
             System.out.println(responseDTO.getError().getCode());
             System.out.println(responseDTO.getError().getMessage());
         }
+        System.out.println("==============================================");
+    }
+
+    @Test
+    void deleteArticleTest(){
+        System.out.println("==============================================");
+        ResponseDTO responseDTO=articleService.deleteArticle(10);
+        if(responseDTO.getSuccess()){
+            System.out.println("Test Success");
+            System.out.println(responseDTO.getData().toString());
+        } else if (!responseDTO.getSuccess()) {
+            System.out.println("Test Fail");
+            System.out.println(responseDTO.getError().getCode());
+            System.out.println(responseDTO.getError().getMessage());
+        }
+        System.out.println("==============================================");
     }
 
 }
