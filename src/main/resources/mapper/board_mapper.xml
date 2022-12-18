@@ -3,6 +3,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.exam.project.Mapper.BoardMapper">
+    <insert id="createBoard" parameterType="com.exam.project.Entity.BoardEntity" useGeneratedKeys="false" keyProperty="board_id">
+        INSERT into cms__board
+        (name_ko)
+        VALUES
+            (#{nameKo})
+    </insert>
+
     <select id="boardIdToName" resultType="String" parameterType="long">
         select
             name_ko

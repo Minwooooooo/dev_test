@@ -4,18 +4,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Builder
-public class ArticleRetrieveResponseDTO {
+public class ArticlesListDTO {
 
     private long id;
     private String title;
     private int viewCount;
     private boolean isPinned;
     private String createdDatetime;
-    private String board;
-    private List<String> image;
+    private String image;
+
 }
