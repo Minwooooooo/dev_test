@@ -189,9 +189,11 @@ public class ArticleTest {
     }
 
     @Test
+    @Order(8)
+    @DisplayName("게시글 삭제")
     void deleteArticleTest(){
         System.out.println("==============================================");
-        ResponseDTO responseDTO=articleService.deleteArticle(10);
+        ResponseDTO responseDTO=articleService.deleteArticle(3);
         if(responseDTO.getSuccess()){
             System.out.println("Test Success");
             System.out.println(responseDTO.getData().toString());
@@ -206,6 +208,8 @@ public class ArticleTest {
 
 
     @Test
+    @Order(6)
+    @DisplayName("게시판 제목으로 검색")
     void searchArticleByBoardNameTest(){
         System.out.println("==============================================");
         searchService.searchArticleByBoardName("자유");
@@ -213,6 +217,8 @@ public class ArticleTest {
     }
 
     @Test
+    @Order(7)
+    @DisplayName("작성 기간으로 검색")
     void searchArticleByDateTest(){
         System.out.println("==============================================");
         searchService.searchArticleByDate("2022-12-15","2022-12-18");

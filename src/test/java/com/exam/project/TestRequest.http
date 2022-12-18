@@ -3,9 +3,9 @@ POST localhost:8080/article/
 Content-Type: application/json
 
 {
-  "boardId": "",
-  "title": "",
-  "content": ""
+  "boardId": "4",
+  "title": "HTTP TEST",
+  "content": "<!DOCTYPE html>  <html lang='en'>  <head>  <meta charset='UTF-8'>  <title>Content</title>  </head>  <body>  <p></p>  <h1>제목</h1>  <h1>HTTP Test</h1>  <h1>이미지</h1>  <img src='ByHTTP_IMG1'/>  <img src='ByHTTP_IMG2'/>  <img src='ByHTTP_IMG3'/>  <h2>내용</h2>  <p>HTTP Test</p>  </body>  </html>"
 }
 
 ### RetrieveArticle (PathVariable = long articleId)
@@ -15,7 +15,7 @@ GET localhost:8080/article/1
 GET localhost:8080/article/list
 
 ### DeleteArticle
-DELETE localhost:8080/article/1
+DELETE localhost:8080/article/4
 
 ### SearchArticleByBoardName (PathVariable = String boardName)
 GET localhost:8080/article/search?boardName=자유
