@@ -47,9 +47,6 @@ public class ArticleEntity {
     @Column
     private String contentString;
 
-    public void updateViewCount(){
-        this.viewCount+=1;
-    }
 
 }
 

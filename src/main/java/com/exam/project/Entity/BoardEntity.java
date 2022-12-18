@@ -15,7 +15,7 @@ import javax.persistence.Id;
 public class BoardEntity {
 
     @Id
-    private long boardId;
+    private Long boardId;
 
     @Column
     private String nameKo;

@@ -7,7 +7,7 @@
         INSERT into cms__article
             (board_id,created_datetime,is_pinned,view_count,title,content_html,content_string)
         VALUES
-            (#{boardId},#{createdDatetime},#{isPinned},#{viewCount},#{title},#{contentHtml},#{contentString})
+            (#{boardId},DEFAULT,#{isPinned},#{viewCount},#{title},#{contentHtml},#{contentString})
     </insert>
     
     <select id="retrieveArticle" resultType="hashMap" parameterType="long">
@@ -27,8 +27,33 @@
 
     <delete id="deleteArticle" parameterType="long">
         DELETE FROM
-                   cms__article
+            cms__article
         WHERE article_id=#{articleId}
     </delete>
+
+    <select id="listArticles" resultType="com.exam.project.Controller.DTO.ResponseDTO.ArticlesListDTO">
+        SELECT
+            article_id,title,view_count,is_pinned,created_datetime,content_html
+        FROM cms__article
+    </select>
+
+    <select id="searchArticleByBoardName" resultType="com.exam.project.Controller.DTO.ResponseDTO.ArticlesListDTO" parameterType="String">
+        SELECT
+            article_id,title,view_count,is_pinned,created_datetime,content_html
+        FROM cms__article
+        WHERE
+                board_id = any(SELECT board_id
+                               FROM cms__board
+                               WHERE name_ko
+                                         LIKE CONCAT('%',#{boradName},'%'))
+    </select>
+
+    <select id="searchArticleByDate" resultType="com.exam.project.Controller.DTO.ResponseDTO.ArticlesListDTO" parameterType="Map">
+        SELECT
+            article_id,title,view_count,is_pinned,created_datetime,content_html
+        FROM cms__article
+        WHERE created_datetime
+                  BETWEEN #{startDate} and #{endDate}
+    </select>
 
 </mapper>
