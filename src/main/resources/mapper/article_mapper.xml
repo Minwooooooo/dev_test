@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exam.project.Mapper.ArticleMapper">
+    <insert id="createArticle" parameterType="com.exam.project.Entity.ArticleEntity" useGeneratedKeys="false" keyProperty="article_id">
+        INSERT into cms__article
+            (board_id,created_datetime,is_pinned,view_count,title,content_html,content_string)
+        VALUES
+            (#{boardId},#{createdDatetime},#{isPinned},#{viewCount},#{title},#{contentHtml},#{contentString})
+    </insert>
+    
+    <select id="retrieveArticle" resultType="hashMap" parameterType="long">
+        SELECT
+            article_id,board_id,created_datetime,is_pinned,view_count,title,content_html,content_string
+        FROM cms__article
+        where article_id = #{articleId}
+    </select>
+
+    <update id="viewCountUp" parameterType="long">
+        UPDATE
+            cms__article
+        SET
+            view_count = view_count+1
+        WHERE article_id=#{articleId}
+    </update>
+
+    <delete id="deleteArticle" parameterType="long">
+        DELETE FROM
+                   cms__article
+        WHERE article_id=#{articleId}
+    </delete>
+
+</mapper>
