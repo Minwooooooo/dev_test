@@ -1,0 +1,25 @@
+### CreateArticle
+POST localhost:8080/article/
+Content-Type: application/json
+
+{
+  "boardId": "",
+  "title": "",
+  "content": ""
+}
+
+### RetrieveArticle (PathVariable = long articleId)
+GET localhost:8080/article/1
+
+### ListArticles
+GET localhost:8080/article/list
+
+### DeleteArticle
+DELETE localhost:8080/article/1
+
+### SearchArticleByBoardName (PathVariable = String boardName)
+GET localhost:8080/article/search?boardName=자유
+
+### SearchArticleByDate (PathVariable = String startDate,PathVariable = String endDate)
+GET localhost:8080/article/period?startDate=2022-12-01&endDate=2023-01-01
+
